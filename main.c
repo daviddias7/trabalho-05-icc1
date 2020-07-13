@@ -145,6 +145,9 @@ int main(int argc, char *argv[]){
     printf("Cheat mode(s/n)\n");
     cheatMode = getc(stdin);
     getchar();
+    if(cheatMode > 'A' && cheatMode < 'Z'){
+	    cheatMode = cheatMode - 'A' + 'a';
+    }
 
     for(int i = 0; i < nJogs; i++){ //randomizar as peças de cada jogador e tira-las do allPecas(saco de peças)
         for(int j = 0; j < 6; j++){

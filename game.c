@@ -43,7 +43,11 @@ void GameState(peca **grid){ //imprimir o tabuleiro para o terminal
     }
     printf("\n");
     for(i = 0; i < xMax-xMin; i++){
-        printf("%d", i+xMin);
+        if(i+xMin >= 0){
+            printf(" %d", i+xMin);
+        } else {
+            printf("%d", i+xMin);
+        }
         printf("|");
         for(int j = 0; j < yMax-yMin; j++){
             colorize(grid[i][j]);
@@ -71,8 +75,8 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
     x -= xMin;
     y -= yMin;
 
-    if(x < -1 || y < -1){ // Nao causar erros no uso das matrizes, possivelmente passando de seus limites
-        printf("1Movimento invalido\n");
+    if(x < -1 || y < -1 || x > xMax-xMin || y > yMax-yMin){ // Nao causar erros no uso das matrizes, possivelmente passando de seus limites
+        printf("------Movimento invalido------\n");
         return 0;
     }
 
@@ -82,7 +86,7 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
 
     if(npecas == 108){ // se ainda nao passou nenhum turno, a unica jogada possivel e no centro do tabuleiro
         if(x != 0 || y != 0){
-            printf("2Movimento invalido\n");
+            printf("------Movimento invalido------\n");
             return 0;
         }
         for(int i = 0; i < 6; i++){ //checar se o jogador tem a peca jogada e ajeitar as pecas disponiveis de acordo
@@ -102,12 +106,12 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
         if(cheatMode == 's'){
             return 1;
         }
-        printf("3Movimento invalido\n");
+        printf("------Movimento invalido------\n");
         return 0;
     }
 
     if(grid[x][y].form != ' '){ //checa se existe alguma peça no local
-        printf("Posicao ocupada\n");
+        printf("------Movimento invalido------\n");
         return 0;
     }
 
@@ -115,7 +119,7 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
 //essa sequencia checa se as linhas e colunas onde o jogador quer jogar ja tem uma peca igual na fila
     for(int i = x+1; i < xMax; i++){
         if(pecaJogada.form == grid[i][y].form && pecaJogada.cor == grid[i][y].cor){
-            printf("4Movimento invalido\n");
+            printf("------Movimento invalido------\n");
             return 0;
         }
     }
@@ -123,7 +127,7 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
     if(x-1 > 0){
         for(int i = x-1; grid[i][y].form != ' ' && i >= 0; i--){
             if(pecaJogada.form == grid[i][y].form && pecaJogada.cor == grid[i][y].cor){
-                printf("5Movimento invalido\n");
+                printf("------Movimento invalido------\n");
                 return 0;
             }
         }
@@ -131,7 +135,7 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
 
     for(int i = y+1; grid[x][i].form != ' ' && i < yMax; i++){
         if(pecaJogada.form == grid[x][i].form && pecaJogada.cor == grid[x][i].cor){
-            printf("6Movimento invalido\n");
+            printf("------Movimento invalido------\n");
             return 0;
         }
     }
@@ -139,7 +143,7 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
     if(y-1 > 0){
         for(int i = y-1; grid[x][i].form != ' ' && i >= 0; i--){
             if(pecaJogada.form == grid[x][i].form && pecaJogada.cor == grid[x][i].cor){
-                printf("7Movimento invalido\n");
+                printf("------Movimento invalido------\n");
                 return 0;
             }
         }
@@ -151,7 +155,7 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
 
     if(grid[x+1][y].form != ' ' || grid[x+1][y].cor != ' '){
         if((pecaJogada.form != grid[x+1][y].form && pecaJogada.cor != grid[x+1][y].cor)){
-            printf("8Movimento invalido\n");
+            printf("------Movimento invalido------\n");
             return 0;
         }
     } else {
@@ -160,7 +164,7 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
 
     if(x-1 >= 0 && (grid[x-1][y].form != ' ' || grid[x-1][y].cor != ' ')){
         if((pecaJogada.form != grid[x-1][y].form && pecaJogada.cor != grid[x-1][y].cor)){
-            printf("9Movimento invalido\n");
+            printf("------Movimento invalido------\n");
             return 0;
         }
     } else {
@@ -169,7 +173,7 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
 
     if(grid[x][y+1].form != ' ' || grid[x][y+1].cor != ' '){
         if((pecaJogada.form != grid[x][y+1].form && pecaJogada.cor != grid[x][y+1].cor)){
-            printf("10Movimento invalido\n");
+            printf("------Movimento invalido------\n");
             return 0;
         }
     } else {
@@ -178,7 +182,7 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
 
     if(y-1 >= 0 && (grid[x][y-1].form != ' ' || grid[x][y-1].cor != ' ')){
         if((pecaJogada.form != grid[x][y-1].form && pecaJogada.cor != grid[x][y-1].cor)){
-            printf("11Movimento invalido\n");
+            printf("------Movimento invalido------\n");
             return 0;
         }
     } else {
@@ -186,7 +190,7 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
     }
 
     if(vazio >= 4){
-        printf("Movimento invalido\n");
+        printf("------Movimento invalido------\n");
         return 0;
     }
 
@@ -200,28 +204,37 @@ int validMove(peca **grid, jogador *jog, char input[20]){ //checa se o movimento
             xAnt -= xMin;
             yAnt -= yMin;
             if(x != xAnt && y != yAnt){
-                printf("Movimento invalido\n");
+                printf("------Movimento invalido------\n");
                 return 0;
             }
         } else {
-            int xAnt[2];
-            int yAnt[2];
-            for(int i = 0; i < 2; i++){
+            int xAnt[jog->vjogs];
+            int yAnt[jog->vjogs];
+            int notAdj = 0;
+            for(int i = 0; i < jog->vjogs; i++){
                 atoii(&(xAnt[i]), &(yAnt[i]), jog->lastPlay[i]);
                 xAnt[i] -= xMin;
                 yAnt[i] -= yMin;
+                if(x != xAnt[i]-1 && x != xAnt[i]+1 && y != yAnt[i]-1 && y != yAnt[i]+1){
+                    notAdj++;
+                }
+            }
+            
+            if(notAdj == jog->vjogs){
+                printf("------Movimento invalido------\n");
+                return 0;
             }
 
             if(jog->vjogs >= 2){
                 if(xAnt[0] == xAnt[1] && x != xAnt[0]){ //a primeira e segunda jogada do turno definem a linha ou coluna
-                    printf("Movimento invalido\n");
+                    printf("------Movimento invalido------\n");
                     return 0;
                 }
                 if(yAnt[0] == yAnt[1] && y != yAnt[0]){
-                    printf("Movimento invalido\n");
+                    printf("------Movimento invalido------\n");
                     return 0;
                 }
-            }   
+            } 	    
         }
     }
 
@@ -261,10 +274,10 @@ int validCommand(peca **grid, jogador *jog, char input[20]){ //checa se o comand
                         return 1;
                     }
                 }
-                printf("Comando invalido\n");
+                printf("------Movimento invalido------\n");
                 return 0;
             } else {
-                printf("Comando invalido\n");
+                printf("------Movimento invalido------\n");
                 return 0;
             }
         case 'j': // jogar e ver se o input de jgoada esta correto
@@ -288,10 +301,10 @@ int validCommand(peca **grid, jogador *jog, char input[20]){ //checa se o comand
                     }
                 }
             }
-            printf("Comando invalido\n");
+            printf("------Movimento invalido------\n");
             return 0;
         default:
-            printf("Comando invalido\n");
+            printf("------Movimento invalido------\n");
             return 0;
     }
 
@@ -306,6 +319,11 @@ void gameMove(peca **grid, jogador *jog, char input[20]){ //controla o turno do 
         colorize(jog->jogadas[i]);
         printf("%c%c ",jog->jogadas[i].form, jog->jogadas[i].cor);
         printf("\033[0m");
+    }
+    printf("\n");
+    printf("Opcoes: jogar p1 x y | passar");
+    if(jog->vjogs == 0){
+        printf("| trocar p1");
     }
     printf("\n");
 

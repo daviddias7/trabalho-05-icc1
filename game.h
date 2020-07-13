@@ -27,9 +27,6 @@ int xMin; // decidi deixa-las como variaveis globais por serem usadas em quase t
 int yMax; //na funcao gameMove
 int yMin;
 
-void fgetss(char str[], int n); //uma funçao para receber inputs que gera menos erros de buffer
-
-void atoii(int *x, int *y, char input[20]); //funçao que transforma o x e y do input do jogador em inteiros a serem usados
 void colorize(peca pecaCor);// apenas para colorir cada peça na hora de imprimir
 
 void GameState(peca **grid); //imprimir o tabuleiro para o terminal
